@@ -4,18 +4,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class LoginSystem {
 
     private File userData;
     private Scanner scanner;
+    private HashMap<String, String> userDataMap;
 
     public LoginSystem() throws Exception {
         try {
             userData = new File("C:\\Users\\Steven\\Documents\\JavaWorkshop\\LoginSystem\\src\\UserFile.txt");
         } catch (Exception e) {
-
+            //Empty Catch
         }
+
+
+        //HashMap username password pairs to make searching faster.
+        userDataMap = new HashMap<>();
+        scanner = new Scanner(userData);
+        String[] check = {};
+
+        while (scanner.hasNextLine()) {
+            String nextLine = scanner.nextLine();
+            check = nextLine.split(" ");
+            userDataMap.put(check[0],check[1]);
+        }
+
     }
 
     /*
@@ -24,41 +39,22 @@ public class LoginSystem {
      * JTextField
      */
     public boolean login(String username, String password) throws FileNotFoundException {
-        String[] check = {};
-        scanner = new Scanner(userData);
 
-        while (scanner.hasNextLine()) {
-            String nextLine = scanner.nextLine();
-            check = nextLine.split(" ");
-            if (check[0].equals(username) && check[1].equals(password)) {
-                System.out.println("Successful Login");
-                scanner.close();
-                return true;
-            }
+        if (userDataMap.containsKey(username) && userDataMap.get(username).equals(password)) {
+            System.out.println("Successful Login");
+            return true;
+        }else {
+            System.out.println("Unsuccessful Login");
+            System.out.println(userDataMap.containsKey(username));
+            return false;
         }
-        scanner.close();
-        System.out.println("Username or password not found");
-        return false;
     }
 
     /*
      * Method to check if Username is taken param: username - from JTextField
      */
     public boolean userExists(String username) throws FileNotFoundException {
-        String[] check = {};
-        scanner = new Scanner(userData);
-
-        while (scanner.hasNextLine()) {
-            String nextLine = scanner.nextLine();
-            check = nextLine.split(" ");
-            if (check[0].equals(username)) {
-                System.out.println("User Exists");
-                scanner.close();
-                return true;
-            }
-        }
-        scanner.close();
-        return false;
+        return userDataMap.containsKey(username);
     }
 
     /*
@@ -72,6 +68,8 @@ public class LoginSystem {
         if (username.contains(" ")||password.contains(" ")){
             return 2;
         }
+        userDataMap.put(username, password);
+
         String writeString = (username + " " + password);
         PrintWriter pw = new PrintWriter(new FileWriter(userData, true));
         pw.println(writeString);
