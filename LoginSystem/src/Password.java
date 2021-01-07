@@ -4,6 +4,10 @@ import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Base64;
 
+/*
+The source of this code: https://stackoverflow.com/questions/2860943/how-can-i-hash-a-password-in-java
+*/
+
 public class Password {
     // The higher the number of iterations the more 
     // expensive computing the hash is for us and
