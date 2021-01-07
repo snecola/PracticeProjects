@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ public class LoginSystem {
 
     public LoginSystem() throws Exception {
         try {
-            userData = new File("C:\\Users\\Steven\\Documents\\JavaWorkshop\\LoginSystem\\src\\UserFile.txt");
+            userData = new File("UserFile.txt");
         } catch (Exception e) {
             //Empty Catch
         }
@@ -38,9 +37,9 @@ public class LoginSystem {
      * userData file param: username - from JTextField param: password - from
      * JTextField
      */
-    public boolean login(String username, String password) throws FileNotFoundException {
+    public boolean login(String username, String password) throws Exception {
 
-        if (userDataMap.containsKey(username) && userDataMap.get(username).equals(password)) {
+        if (userDataMap.containsKey(username) && Password.check(password, userDataMap.get(username))) {
             System.out.println("Successful Login");
             return true;
         }else {
@@ -54,23 +53,29 @@ public class LoginSystem {
      * Method to check if Username is taken param: username - from JTextField
      */
     public boolean userExists(String username) throws FileNotFoundException {
+        System.out.println(userDataMap.containsKey(username));
+        System.out.println(userDataMap.toString());
         return userDataMap.containsKey(username);
     }
 
     /*
-     * Method to register a new user to userData param: username - from JTextField
+     * Method to register a new user to userData 
+     * param: username - from JTextField
      * param: password - from JTextField
      */
-    public int register(String username, String password) throws IOException {
+    public int register(String username, String password) throws Exception {
         if (userExists(username)){
             return 1;
         }
         if (username.contains(" ")||password.contains(" ")){
             return 2;
         }
-        userDataMap.put(username, password);
 
-        String writeString = (username + " " + password);
+        String hashedPass = Password.getSaltedHash(password);
+
+        userDataMap.put(username, hashedPass);
+
+        String writeString = (username + " " + hashedPass);
         PrintWriter pw = new PrintWriter(new FileWriter(userData, true));
         pw.println(writeString);
         pw.close();

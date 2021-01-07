@@ -136,10 +136,9 @@ public class LoginGUI extends JFrame {
                 String event = e.getActionCommand();
                 if (event == "Login") {
                     try {
-                        loginSystem.login(textFields.get(0).getText(), textFields.get(1).getText());
-                    } catch (FileNotFoundException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
+						loginSystem.login(textFields.get(0).getText(), textFields.get(1).getText());
+                    }catch(Exception e1){
+                        //No Expected Exception Handling
                     }
                 }
                 if (event=="Register"){
