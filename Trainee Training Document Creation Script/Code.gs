@@ -11,9 +11,9 @@ function onFormSubmit(e) {
   /*
    * Document the IDs for the pre-existing files
    */
-  const traineeChecklistSpreadsheetID = "1dXdcoZKB59SXHlgYSohORjJB6SL7swq-Bg5zJE9CZYM";
-  const traineeFolderID = "19f9AlsU1YAQ6T3zXjAYs5F-u01Tqv3F0";
-  const traineeDocumentTemplateID = "12wDtRPlHuor1kX54R-buEu9R6x2dg_eyXzajNuc5eiY";
+  var traineeChecklistSpreadsheetID = "";
+  var traineeFolderID = "";
+  var traineeDocumentTemplateID = "";
 
   /*
    * Get the Trainee's IGN from the submitted form
